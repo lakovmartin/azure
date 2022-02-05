@@ -31,9 +31,15 @@ variable "function_app_name" {
   default     = "examplefunctionappname"
 }
 
+variable "resource_group_name" {
+  description = "The name of the new resource group the resources will be deployed in"
+  type        = string
+  default     = "exampleresourcegroupname"
+}
+
 
 resource "azurerm_resource_group" "function-rg" {
-  name     = "uks-cv-function-001"
+  name     = var.resource_group_name
   location = "UK South"
 }
 
