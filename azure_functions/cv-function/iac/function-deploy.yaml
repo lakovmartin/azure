@@ -9,17 +9,18 @@ trigger:
 variables:
 
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: 'devops-poc2-deploy-spi'
+  azureSubscription: 'exampleAzureSubscriptio'
 
-  # Function app name
-  functionAppName: 'uksmlresume'
+  # THe name of the Azure Function App Resource
+  functionAppName: 'exampleFunctionAppName'
 
-  # Environment name
+  # The name of the environment in Azure DevOps
   environmentName: 'development'
 
-  # Agent VM image name
+  # The agent VM used for the deployment of the pipeline. Uses Ubuntu.
   vmImageName: 'ubuntu-latest'
 
+  # The default working directory where your Function App is located
   workingDirectory: '$(System.DefaultWorkingDirectory)/cv-functions'
 
 stages:
