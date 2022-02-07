@@ -55,7 +55,7 @@ resource "azurerm_app_service_plan" "function-plan" {
   name                = var.app_service_plan_name
   location            = azurerm_resource_group.function-rg.location
   resource_group_name = azurerm_resource_group.function-rg.name
-  kind                = "Linux"
+  kind                = "FunctionApp"
   reserved            = true
 
   sku {
@@ -73,7 +73,7 @@ resource "azurerm_function_app" "function-app" {
   storage_account_access_key = azurerm_storage_account.function-storage.primary_access_key
   https_only                 = true
   os_type                    = "linux"
-  version                    = "~4"
+  version                    = "~3"
   app_settings = {
     FUNCTIONS_WORKER_RUNTIME = "node"
   }
