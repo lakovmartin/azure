@@ -1,0 +1,140 @@
+trigger: none
+  
+pool: <pool-name>
+
+
+jobs:
+
+- job: job1
+  steps:
+  - task: PowerShell@2
+    displayName: loop1
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job2
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job3
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job4
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job5
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job6
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job7
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+
+- job: job8
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+- job: job9
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+
+- job: job10
+  steps:
+  - task: PowerShell@2
+    displayName: loop2
+    inputs:
+      targetType: 'inline'
+      script: |
+        for($i=1;$i -le 15;$i++)
+        {
+
+            Start-Sleep -Seconds 60
+
+        }
+  
