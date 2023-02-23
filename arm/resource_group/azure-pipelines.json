@@ -1,28 +1,28 @@
 trigger:
-- master
-
-name: Deploy Bicep files
-
-variables:
-  vmImageName: 'ubuntu-latest'
-
-  azureServiceConnection: 'devops-poc3-deploy-spi'
-  location: 'australiaeast'
-  templateFile: 'https://github.com/lakovmartin/azure/blob/main/arm/resource_group/template.bicep'
-  templateParameterFile: 'https://github.com/lakovmartin/azure/blob/main/arm/resource_group/parameters.json'
-pool:
-  vmImage: $(vmImageName)
-
-steps:
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Subscription'
-    azureResourceManagerConnection: '$(azureServiceConnection)'
-    action: 'Create Or Update Resource Group'
-    location: '$(location)'
-    templateLocation: 'URL of the file'
-    csmFileLink: '$(templateFile)'
-    csmParametersFileLink: '$(templateParameterFile)'
-    overrideParameters: '-storageAccountType Standard_LRS'
-    deploymentMode: 'Incremental'
-    deploymentName: 'DeployPipelineTemplate'
+  - master
+  
+  name: Deploy Bicep files
+  
+  
+  variables:
+    vmImageName: 'ubuntu-latest'
+  
+    azureServiceConnection: 'devops-poc3-deploy-spi'
+    location: 'australiaeast'
+    templateFile: 'bicep/azure_resource_group/template.bicep'
+    templateParameterFile: 'bicep/azure_resource_group/parameters.json'
+  pool:
+    vmImage: $(vmImageName)
+  
+  steps:
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Subscription'
+      azureResourceManagerConnection: '$(azureServiceConnection)'
+      action: 'Create Or Update Resource Group'
+      location: '$(location)'
+      templateLocation: 'Linked artifact'
+      csmFile: '$(Build.SourcesDirectory)/$(templateFile)'
+      csmParametersFile: '$(Build.SourcesDirectory)/$(templateParameterFile)'
+      deploymentMode: 'Incremental'
+      deploymentName: 'DeployPipelineTemplate'
