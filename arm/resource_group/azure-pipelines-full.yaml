@@ -1,0 +1,82 @@
+trigger:
+- master
+
+name: Deploy Bicep files
+
+
+variables:
+  vmImageName: 'ubuntu-latest'
+
+  azureServiceConnection: 'devops-poc3-deploy-spi'
+  location: 'australiaeast'
+  templateFile: 'bicep/azure_resource_group/template.bicep'
+  templateParameterFile: 'bicep/azure_resource_group/parameters.json'
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:  
+
+- stage: Lint
+  jobs:
+  - job: LintCode
+    displayName: Lint code
+    steps:
+      - script: |
+          az bicep build --file $(Build.SourcesDirectory)/$(templateFile)
+        name: LintBicepCode
+        displayName: Run Bicep linter
+
+- stage: Validate
+  dependsOn: Lint
+  jobs: 
+  - job: ValidateBicepTemplate
+    steps:
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Subscription'
+        azureResourceManagerConnection: '$(azureServiceConnection)'
+        location: '$(location)'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(Build.SourcesDirectory)/$(templateFile)'
+        csmParametersFile: '$(Build.SourcesDirectory)/$(templateParameterFile)'
+        deploymentMode: 'Validation'        
+
+- stage: Preview
+  dependsOn: Validate
+  jobs: 
+  - job: Preview
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: '$(azureServiceConnection)'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment sub what-if \
+            --template-file $(Build.SourcesDirectory)/$(templateFile) \
+            --parameters '$(Build.SourcesDirectory)/$(templateParameterFile)' \
+            --location '$(location)'
+
+- stage: Deploy
+  jobs:
+    - deployment: Deploy
+      environment: BicepEnvironment
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - checkout: self
+
+            - task: AzureResourceManagerTemplateDeployment@3
+              name: DeployBicepTemplate
+              inputs:
+                deploymentScope: 'Subscription'
+                azureResourceManagerConnection: '$(azureServiceConnection)'
+                action: 'Create Or Update Resource Group'
+                location: '$(location)'
+                templateLocation: 'Linked artifact'
+                csmFile: '$(Build.SourcesDirectory)/$(templateFile)'
+                csmParametersFile: '$(Build.SourcesDirectory)/$(templateParameterFile)'
+                deploymentMode: 'Incremental'
+                deploymentName: 'DeployPipelineTemplate'
